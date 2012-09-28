@@ -287,16 +287,11 @@ Datum json_array_to_array_generic_impl(cJSON *jsonArray, int json_type, Oid elem
 
 	for (elem = jsonArray->child; elem; elem = elem->next)
 	{
-	    /*todo [alexey]: check this change*/
-		if (elem->child)
-			ereport(ERROR,
-					(errcode(ERRCODE_WRONG_OBJECT_TYPE),
-					 errmsg("no childs allowed")));
 		if (!(json_type == CJSON_TYPE_ANY || match_json_types(json_type, elem->type)))
 			ereport(ERROR,
 					(errcode(ERRCODE_WRONG_OBJECT_TYPE),
 					 errmsg("expected value of type %s, actual %s at %d position",
-						 json_type_str(json_type), json_type_str(elem->type), ind)));
+						 json_type_str(json_type), json_type_str(elem->type), count)));
 		++count;
 	}
 
@@ -540,7 +535,7 @@ Datum json_get_timestamp(PG_FUNCTION_ARGS)
  */
 Datum json_array_to_object_array(PG_FUNCTION_ARGS)
 {
-	return json_array_to_array_generic_args(fcinfo, cJSON_String, TEXTOID, extract_json_to_string);
+	return json_array_to_array_generic_args(fcinfo, CJSON_TYPE_ANY, TEXTOID, extract_json_to_string);
 }
 
 /**
@@ -550,7 +545,7 @@ Datum json_array_to_object_array(PG_FUNCTION_ARGS)
  */
 Datum json_array_to_multi_array(PG_FUNCTION_ARGS)
 {
-	return json_array_to_array_generic_args(fcinfo, cJSON_String, TEXTOID, extract_json_to_string);
+	return json_array_to_array_generic_args(fcinfo, CJSON_TYPE_ANY, TEXTOID, extract_json_to_string);
 }
 
 Datum json_array_to_text_array(PG_FUNCTION_ARGS)

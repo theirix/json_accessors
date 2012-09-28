@@ -63,5 +63,10 @@ select json_array_to_text_array(json_get_object('{"foo":"qq", "bar": ["baz1", "b
 -- baz2
 select (json_array_to_text_array(json_get_object('{"foo":"qq", "bar": ["baz1", "baz2", "baz3"]}', 'bar')))[2];
 
+-- {"{\"foo\":42}","{\"bar\":[]}"}
+select json_array_to_object_array('[{"foo":42}, {"bar":[]}]');
+-- {"[\"foo\",\"bar\"]",[]}
+select json_array_to_multi_array('[["foo", "bar"], []]');
+
 \t off
 \pset format aligned
