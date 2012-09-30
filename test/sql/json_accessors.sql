@@ -1,6 +1,6 @@
 set client_min_messages to 'error';
-drop extension if exists "json_accessors_c" cascade;
-create extension "json_accessors_c";
+drop extension if exists "json_accessors" cascade;
+create extension "json_accessors";
 set client_min_messages to 'notice';
 
 \t on

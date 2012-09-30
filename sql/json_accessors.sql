@@ -1,7 +1,7 @@
-/* json_accessors_c--1.2.sql */
+/* json_accessors--1.3.sql */
 
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
-\echo Use "create extension json_accessors_c" to load this file. \quit
+\echo Use "create extension json_accessors" to load this file. \quit
 
 -- must be run as a normal user
 

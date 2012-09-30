@@ -1,12 +1,22 @@
-MODULE_big = json_accessors
-OBJS = json_accessors.o cJSON.o
+EXTENSION    = json_accessors
+EXTVERSION   = $(shell grep default_version $(EXTENSION).control | \
+               sed -e "s/default_version[[:space:]]*=[[:space:]]*'\([^']*\)'/\1/")
+MODULE_big   = json_accessors
+OBJS         = $(patsubst %.c,%.o,$(wildcard src/*.c))
+DATA         = $(wildcard sql/*--*.sql) sql/$(EXTENSION)--$(EXTVERSION).sql
+#DOCS         = $(wildcard doc/*.mmd)
+TESTS        = $(wildcard test/sql/*.sql)
+REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
+REGRESS_OPTS = --inputdir=test $(REGRESS_OPTS) 
+PG_CONFIG    := pg_config
+#PG_CPPFLAGS  = 
+EXTRA_CLEAN = sql/$(EXTENSION)--$(EXTVERSION).sql
 
-EXTENSION = json_accessors_c
-DATA = json_accessors_c--1.2.sql
+all: sql/$(EXTENSION)--$(EXTVERSION).sql
 
-PG_CPPFLAGS = 
-REGRESS = json_accessors_c
+sql/$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql
+	echo $<
+	cp $< $@
 
-PG_CONFIG := pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
