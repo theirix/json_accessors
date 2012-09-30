@@ -100,7 +100,7 @@ Project contains SQL tests that can be launched on PostgreSQL with installed ext
 Tests are performed on a dynamically created database with a specified user (with the 
 appropriated permissions - create database, for example):
 
-    REGRESS_OPTS='--user postgres' gmake PG_CONFIG=<postgresql_install_dir>/bin/pg_config installcheck
+    gmake PG_CONFIG=<postgresql_install_dir>/bin/pg_config PGUSER=postgres installcheck
 
 
 ### Installing manually

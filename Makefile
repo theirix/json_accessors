@@ -4,10 +4,10 @@ EXTVERSION   = $(shell grep default_version $(EXTENSION).control | \
 MODULE_big   = json_accessors
 OBJS         = $(patsubst %.c,%.o,$(wildcard src/*.c))
 DATA         = $(wildcard sql/*--*.sql) sql/$(EXTENSION)--$(EXTVERSION).sql
-#DOCS         = $(wildcard doc/*.mmd)
+#DOCS        = $(wildcard doc/*.mmd)
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
-REGRESS_OPTS = --inputdir=test $(REGRESS_OPTS) 
+REGRESS_OPTS = --inputdir=test
 PG_CONFIG    := pg_config
 #PG_CPPFLAGS  = 
 EXTRA_CLEAN = sql/$(EXTENSION)--$(EXTVERSION).sql
@@ -15,7 +15,6 @@ EXTRA_CLEAN = sql/$(EXTENSION)--$(EXTVERSION).sql
 all: sql/$(EXTENSION)--$(EXTVERSION).sql
 
 sql/$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql
-	echo $<
 	cp $< $@
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
