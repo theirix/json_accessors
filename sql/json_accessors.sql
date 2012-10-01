@@ -26,7 +26,7 @@ create or replace function json_get_bigint(text, text) returns bigint
 create or replace function json_get_numeric(text, text) returns numeric
  as 'MODULE_PATHNAME' language C immutable strict;
 
-create or replace function json_get_timestamp(text, text) returns timestamp
+create or replace function json_get_timestamp(text, text) returns timestamp without timezone
  as 'MODULE_PATHNAME' language C immutable strict;
 
 -- Array functions

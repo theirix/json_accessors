@@ -3,18 +3,17 @@ JSON accessor functions for PostgreSQL
 
 [PostgreSQL](http://www.postgresql.org/) stored functions for accessing [JSON](http://www.json.org/) fields.
 
+This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of [cJSON](http://sourceforge.net/projects/cjson/) library.
+
 If you have text (varchar) columns with data like this:
 
     {"create_date":"2009-12-01 01:23:45","tags":["foo","bar","baz"]}
 
-these functions can be used for:
+These functions can be used for:
 
  - creating queries to JSON object fields
  - creating B-tree (default) indexes on JSON object fields (`create_date` field)
  - creating [GIN](http://www.postgresql.org/docs/9.1/static/gin.html) indexes on JSON arrays (`tags` field)
-
-This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) -
-`json_accessors` with stored functions. Extension is native and writen in C on top of [cJSON](http://sourceforge.net/projects/cjson/) library.
 
 PostgreSQL have had no JSON support until version 9.2, which [introduced some support](http://www.postgresql.org/docs/9.2/static/functions-json.html).
 These 9.2 functions won't help with indexing JSON data.
