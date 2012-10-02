@@ -67,9 +67,6 @@ select (json_array_to_text_array(json_get_object('{"foo":"qq", "bar": ["baz1", "
 
 -- {"{\"foo\":42}","{\"bar\":[]}"}
 select json_array_to_object_array('[{"foo":42}, {"bar":[]}]');
--- {"[\"foo\",\"bar\"]",[]}
-select json_array_to_multi_array('[["foo", "bar"], []]');
-
 -- {"{\"foo\":42}","{\"bar\":[]}"}
 select json_get_object_array('{"key" : [{"foo":42}, {"bar":[]}]}', 'key');
 

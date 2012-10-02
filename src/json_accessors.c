@@ -85,7 +85,6 @@ Datum json_get_numeric(PG_FUNCTION_ARGS);
 Datum json_get_timestamp(PG_FUNCTION_ARGS);
 
 Datum json_array_to_object_array(PG_FUNCTION_ARGS);
-Datum json_array_to_multi_array(PG_FUNCTION_ARGS);
 Datum json_array_to_text_array(PG_FUNCTION_ARGS);
 Datum json_array_to_boolean_array(PG_FUNCTION_ARGS);
 Datum json_array_to_int_array(PG_FUNCTION_ARGS);
@@ -94,7 +93,6 @@ Datum json_array_to_numeric_array(PG_FUNCTION_ARGS);
 Datum json_array_to_timestamp_array(PG_FUNCTION_ARGS);
 
 Datum json_get_object_array(PG_FUNCTION_ARGS);
-Datum json_get_multi_array(PG_FUNCTION_ARGS);
 Datum json_get_text_array(PG_FUNCTION_ARGS);
 Datum json_get_boolean_array(PG_FUNCTION_ARGS);
 Datum json_get_int_array(PG_FUNCTION_ARGS);
@@ -116,7 +114,6 @@ PG_FUNCTION_INFO_V1(json_get_numeric);
 PG_FUNCTION_INFO_V1(json_get_timestamp);
 
 PG_FUNCTION_INFO_V1(json_array_to_object_array);
-PG_FUNCTION_INFO_V1(json_array_to_multi_array);
 PG_FUNCTION_INFO_V1(json_array_to_text_array);
 PG_FUNCTION_INFO_V1(json_array_to_boolean_array);
 PG_FUNCTION_INFO_V1(json_array_to_int_array);
@@ -125,7 +122,6 @@ PG_FUNCTION_INFO_V1(json_array_to_numeric_array);
 PG_FUNCTION_INFO_V1(json_array_to_timestamp_array);
 
 PG_FUNCTION_INFO_V1(json_get_object_array);
-PG_FUNCTION_INFO_V1(json_get_multi_array);
 PG_FUNCTION_INFO_V1(json_get_text_array);
 PG_FUNCTION_INFO_V1(json_get_boolean_array);
 PG_FUNCTION_INFO_V1(json_get_int_array);
@@ -538,12 +534,6 @@ Datum json_array_to_object_array(PG_FUNCTION_ARGS)
 	return json_array_to_array_generic_args(fcinfo, CJSON_TYPE_ANY, TEXTOID, extract_json_to_string);
 }
 
-Datum json_array_to_multi_array(PG_FUNCTION_ARGS)
-{
-	// TODO convert to multidim
-	return json_array_to_array_generic_args(fcinfo, CJSON_TYPE_ANY, TEXTOID, extract_json_to_string);
-}
-
 Datum json_array_to_text_array(PG_FUNCTION_ARGS)
 {
 	return json_array_to_array_generic_args(fcinfo, cJSON_String, TEXTOID, extract_json_string);
@@ -586,12 +576,6 @@ Datum json_array_to_timestamp_array(PG_FUNCTION_ARGS)
  */
 Datum json_get_object_array(PG_FUNCTION_ARGS)
 {
-	return json_object_get_generic_args(fcinfo, cJSON_Array, extract_object_array);
-}
-
-Datum json_get_multi_array(PG_FUNCTION_ARGS)
-{
-	// TODO convert to multidim
 	return json_object_get_generic_args(fcinfo, cJSON_Array, extract_object_array);
 }
 

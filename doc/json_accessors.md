@@ -115,16 +115,6 @@ Example:
         select json_array_to_object_array('[{"foo":42}, {"bar":[]}]') = array['{"foo":42}','{"bar":[]}']
 
 
-#### json_array_to_multi_array(text) -> text[]
-
-_Experimental_
-
-Converts a JSON array of any depth (single or multidimensional) to a PG multidimensional array. Original JSON must contains only arrays, objects are not allowed. 
-
-Example:
-
-        select json_array_to_multi_array('[["foo", "bar"], []]') = array[['foo','bar'], []];
-
 #### json_array_to_text_array(text) -> text[]
 
 Converts a JSON array of text objects to PG array `text[]`. 
@@ -168,16 +158,6 @@ Extract and converts a JSON array of any JSON objects to PG array `text[]`. JSON
 Example:
 
         select json_get_object_array('{"key" : [{"foo":42}, {"bar":[]}]}', 'key') = array['{"foo":42}','{"bar":[]}'];
-
-#### json_get_multi_array(text, text) -> text[]
-
-_Experimental_
-
-Extract and converts a JSON array of JSON arrays to PG array of text arrays `text[]`. 
-
-Example:
-
-        select json_get_multi_array('{"key" : [["foo", "bar"], []] }', 'key') = array[['foo','bar'], []];
 
 #### json_get_text_array(text, text) -> text[]
 

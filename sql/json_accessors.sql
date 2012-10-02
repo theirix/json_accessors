@@ -34,9 +34,6 @@ create or replace function json_get_timestamp(text, text) returns timestamp with
 create or replace function json_array_to_object_array(text) returns text[]
  as 'MODULE_PATHNAME' language C immutable strict;
 
-create or replace function json_array_to_multi_array(text) returns text[]
- as 'MODULE_PATHNAME' language C immutable strict;
-
 create or replace function json_array_to_text_array(text) returns text[]
  as 'MODULE_PATHNAME' language C immutable strict; 
 
@@ -58,9 +55,6 @@ create or replace function json_array_to_timestamp_array(text) returns timestamp
 -- Indirect array functions
 
 create or replace function json_get_object_array(text, text) returns text[]
- as 'MODULE_PATHNAME' language C immutable strict;
-
-create or replace function json_get_multi_array(text, text) returns text[]
  as 'MODULE_PATHNAME' language C immutable strict;
 
 create or replace function json_get_text_array(text, text) returns text[]
