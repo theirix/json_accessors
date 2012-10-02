@@ -471,7 +471,7 @@ bool extract_json_to_string(cJSON *elem, DatumPtr result)
 
 bool extract_object_array(cJSON *elem, DatumPtr result)
 {
-	*result = json_array_to_array_generic_impl(elem, cJSON_String, TEXTOID, extract_json_to_string);
+	*result = json_array_to_array_generic_impl(elem, CJSON_TYPE_ANY, TEXTOID, extract_json_to_string);
 	return true;
 }
 
@@ -538,13 +538,9 @@ Datum json_array_to_object_array(PG_FUNCTION_ARGS)
 	return json_array_to_array_generic_args(fcinfo, CJSON_TYPE_ANY, TEXTOID, extract_json_to_string);
 }
 
-/**
- *
- * Added to mirror java function, but this one doesn't check element types before converting them to string
- *
- */
 Datum json_array_to_multi_array(PG_FUNCTION_ARGS)
 {
+	// TODO convert to multidim
 	return json_array_to_array_generic_args(fcinfo, CJSON_TYPE_ANY, TEXTOID, extract_json_to_string);
 }
 
@@ -593,13 +589,9 @@ Datum json_get_object_array(PG_FUNCTION_ARGS)
 	return json_object_get_generic_args(fcinfo, cJSON_Array, extract_object_array);
 }
 
-/**
- *
- * Added to mirror java function, but this one doesn't check element types before converting them to string
- *
- */
 Datum json_get_multi_array(PG_FUNCTION_ARGS)
 {
+	// TODO convert to multidim
 	return json_object_get_generic_args(fcinfo, cJSON_Array, extract_object_array);
 }
 

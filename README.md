@@ -1,19 +1,9 @@
 JSON accessor functions for PostgreSQL
 ======================================
 
-[PostgreSQL](http://www.postgresql.org/) stored functions for accessing [JSON](http://www.json.org/) fields.
+[PostgreSQL](http://www.postgresql.org/) extension with stored functions for accessing [JSON](http://www.json.org/) fields.
 
 This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of [cJSON](http://sourceforge.net/projects/cjson/) library.
-
-If you have text (varchar) columns with data like this:
-
-    {"create_date":"2009-12-01 01:23:45","tags":["foo","bar","baz"]}
-
-These functions can be used for:
-
- - creating queries to JSON object fields
- - creating B-tree (default) indexes on JSON object fields (`create_date` field)
- - creating [GIN](http://www.postgresql.org/docs/9.1/static/gin.html) indexes on JSON arrays (`tags` field)
 
 PostgreSQL have had no JSON support until version 9.2, which [introduced some support](http://www.postgresql.org/docs/9.2/static/functions-json.html).
 These 9.2 functions won't help with indexing JSON data.
@@ -22,48 +12,10 @@ JSON parsing functions may be written using [PL/V8](http://code.google.com/p/plv
 [this article](http://people.planetpostgresql.org/andrew/index.php?/archives/249-Using-PLV8-to-index-JSON.html) has an example of PL/V8 usage.
 This project provides accessor functions for JSON without using PL/V8.
 
-Functions
+Usage
 ---------
 
-__Function for accessing JSON object fields:__
-
-    function json_get_text(text, text) returns text
-
-Usage example, returns `qq`:
-
-    select json_get_text('{"foo":"qq", "bar": true}', 'foo')
-
-There are also similar functions returning `boolean`, `int`, `bigint`, `numeric` and `timestamp without timezone`.
-Timestamp format `yyyy-MM-dd HH:mm:ss` is fixed.
-
-To access complex JSON object fields you can use:
-
-    function json_get_object(text, text) returns text
-
-It extractc child JSON object and returns it as text.
-Usage example, returns `{"boo":42}`:
-
-    select json_get_object('{"foo":{"boo":42}, "bar": true}', 'foo')
-
-To access JSON object fields, that contain arrays, there are functions for different array types
-(including arrays of objects and multidimensional arrays), this example returns `array[42,43]`:
-
-    json_get_int_array('{"boo": [42, 43]}', 'boo')
-
-Arrays with different element types are not supported
-
-__Function for converting JSON arrays into PostgreSQL arrays:__
-
-    function json_array_to_text_array(text) returns text[]
-
-Usage example, returns `array['foo', 'bar']`:
-
-    select json_array_to_text_array('["foo", "bar"]')
-
-There are also similar functions returning `boolean[]`, `int[]`, `bigint[]`, `numeric[]` and `timestamp without timezone[]`.
-All primitive arrays returns from Java functions in boxed form (`Boolean[]` etc.) to allow returning `NULL` elements.
-Having nulls in such arrays is not a good idea, but "Cannot assign null to int" errors in stored functions are worse.
-Functions for arrays of objects and multidimensional arrays return `text[]`.
+Please consult with [doc/json_accessors.md](doc/json_accessors.md) for a function reference.
 
 
 Installing extension

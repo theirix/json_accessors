@@ -11,16 +11,7 @@ Extension is compatible witgh PostgreSQL 9.1 and 9.2.
 Description
 -----------
 
-[PostgreSQL](http://www.postgresql.org/) stored functions for accessing [JSON](http://www.json.org/) fields.
-
-This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of [cJSON](http://sourceforge.net/projects/cjson/) library.
-
-PostgreSQL have had no JSON support until version 9.2, which [introduced some support](http://www.postgresql.org/docs/9.2/static/functions-json.html).
-These 9.2 functions won't help with indexing JSON data.
-
-JSON parsing functions may be written using [PL/V8](http://code.google.com/p/plv8js/wiki/PLV8) module,
-[this article](http://people.planetpostgresql.org/andrew/index.php?/archives/249-Using-PLV8-to-index-JSON.html) has an example of PL/V8 usage.
-Project provides accessor functions for JSON without using PL/V8.
+[PostgreSQL](http://www.postgresql.org/) native extension with stored functions for accessing [JSON](http://www.json.org/) fields.
 
 Usage
 -----
@@ -117,21 +108,21 @@ Functions convert JSON arrays to PostgreSQL arrays.
 
 #### json_array_to_object_array(text) -> text[]
 
-Converts a JSON array of JSON objects to PG array `text[]`. 
+Converts a JSON array of any JSON objects to PG array `text[]`. Each object is represented as a string.
 
 Example:
 
-				TODO
         select json_array_to_object_array('[{"foo":42}, {"bar":[]}]') = array['{"foo":42}','{"bar":[]}']
 
 
 #### json_array_to_multi_array(text) -> text[]
 
-Cnverts a JSON array of JSON arrays to PG array of text arrays `text[]`. 
+_Experimental_
+
+Converts a JSON array of any depth (single or multidimensional) to a PG multidimensional array. Original JSON must contains only arrays, objects are not allowed. 
 
 Example:
 
-				TODO fix a primer
         select json_array_to_multi_array('[["foo", "bar"], []]') = array[['foo','bar'], []];
 
 #### json_array_to_text_array(text) -> text[]
@@ -172,20 +163,20 @@ Array is referenced in a JSON expression by a key.
 
 #### json_get_object_array(text, text) -> text[]
 
-Extract and converts a JSON array of JSON objects to PG array `text[]`. 
+Extract and converts a JSON array of any JSON objects to PG array `text[]`. JSON objects are represented as a text.
 
 Example:
 
-				TODO
         select json_get_object_array('{"key" : [{"foo":42}, {"bar":[]}]}', 'key') = array['{"foo":42}','{"bar":[]}'];
 
 #### json_get_multi_array(text, text) -> text[]
+
+_Experimental_
 
 Extract and converts a JSON array of JSON arrays to PG array of text arrays `text[]`. 
 
 Example:
 
-				TODO
         select json_get_multi_array('{"key" : [["foo", "bar"], []] }', 'key') = array[['foo','bar'], []];
 
 #### json_get_text_array(text, text) -> text[]

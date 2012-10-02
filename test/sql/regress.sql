@@ -58,6 +58,8 @@ select json_get_timestamp_array('{"foo":"qq", "bar": ["2009-12-01 01:23:45", "20
 select json_get_object('{"foo":"qq", "bar": ["baz1", "baz2", "baz3"]}', 'foo');
 -- ["baz1","baz2","baz3"]
 select json_get_object('{"foo":"qq", "bar": ["baz1", "baz2", "baz3"]}', 'bar');
+-- {"baz1":"baz2"}
+select json_get_object('{"foo":"qq", "bar": {"baz1": "baz2"}}', 'bar');
 -- {baz1,baz2,baz3}
 select json_array_to_text_array(json_get_object('{"foo":"qq", "bar": ["baz1", "baz2", "baz3"]}', 'bar'));
 -- baz2
@@ -67,6 +69,9 @@ select (json_array_to_text_array(json_get_object('{"foo":"qq", "bar": ["baz1", "
 select json_array_to_object_array('[{"foo":42}, {"bar":[]}]');
 -- {"[\"foo\",\"bar\"]",[]}
 select json_array_to_multi_array('[["foo", "bar"], []]');
+
+-- {"{\"foo\":42}","{\"bar\":[]}"}
+select json_get_object_array('{"key" : [{"foo":42}, {"bar":[]}]}', 'key');
 
 \t off
 \pset format aligned
