@@ -202,4 +202,5 @@ Developed by [Eugene Seliverstov](theirix@concerteza.ru)
 Copyright and License
 ---------------------
 
-You can use any code from this project under the terms of [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+You can use any code from this project under the terms of [PostgreSQL License](http://www.postgresql.org/about/licence/).
+Please consult with the COPYING for license information.
