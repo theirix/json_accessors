@@ -1,5 +1,5 @@
-json_accessors
-==============
+json_accessors extension
+========================
 
 Installing
 ----------

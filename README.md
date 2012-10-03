@@ -15,7 +15,9 @@ This project provides accessor functions for JSON without using PL/V8.
 Usage
 -----
 
-Please consult with [doc/json_accessors.md](doc/json_accessors.md) for a function reference.
+Please consult with doc/json_accessors.md for a function and operator reference.
+
+On PGXN please click on extension from _Extensions_ section to view reference.
 
 
 Installing extension
@@ -69,7 +71,7 @@ Copy control file to the extension directory:
 
 Copy SQL prototypes file to the extension directory:
     
-    cp json_accessors--1.3.0.sql `<postgresql_install_dir>/bin/pg_config --sharedir`/extension
+    cp json_accessors--<version>.sql `<postgresql_install_dir>/bin/pg_config --sharedir`/extension
 
 Create an extension by running:
 
@@ -89,4 +91,5 @@ License information
 -------------------
 
 You can use any code from this project under the terms of [PostgreSQL License](http://www.postgresql.org/about/licence/).
+
 Please consult with the COPYING for license information.
