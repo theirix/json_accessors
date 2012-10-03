@@ -1,7 +1,7 @@
 JSON accessor functions for PostgreSQL
 ======================================
 
-[PostgreSQL](http://www.postgresql.org/) extension with stored functions for accessing [JSON](http://www.json.org/) fields.
+Extension provides stored functions for accessing [JSON](http://www.json.org/) fields by keys and converting JSON arrays.
 
 This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of [cJSON](http://sourceforge.net/projects/cjson/) library.
 
@@ -69,7 +69,7 @@ Copy control file to the extension directory:
 
 Copy SQL prototypes file to the extension directory:
     
-    cp json_accessors--1.3.sql `<postgresql_install_dir>/bin/pg_config --sharedir`/extension
+    cp json_accessors--1.3.0.sql `<postgresql_install_dir>/bin/pg_config --sharedir`/extension
 
 Create an extension by running:
 

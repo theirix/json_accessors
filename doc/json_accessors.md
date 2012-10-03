@@ -6,12 +6,12 @@ Installing
 
     CREATE EXTENSION json_accessors;
 
-Extension is compatible witgh PostgreSQL 9.1 and 9.2.
+Extension is compatible witgh PostgreSQL 9.1.
 
 Description
 -----------
 
-[PostgreSQL](http://www.postgresql.org/) native extension with stored functions for accessing [JSON](http://www.json.org/) fields.
+Extension provides stored functions for accessing [JSON](http://www.json.org/) fields by keys and converting JSON arrays.
 
 Usage
 -----
