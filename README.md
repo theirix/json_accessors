@@ -13,7 +13,7 @@ JSON parsing functions may be written using [PL/V8](http://code.google.com/p/plv
 This project provides accessor functions for JSON without using PL/V8.
 
 Usage
----------
+-----
 
 Please consult with [doc/json_accessors.md](doc/json_accessors.md) for a function reference.
 
