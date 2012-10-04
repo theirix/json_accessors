@@ -189,7 +189,6 @@ ArrayType* construct_typed_array(Datum *elems, int nelems, Oid elmtype)
  */
 Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextract_type_from_json extractor)
 {
-	bool status = false;
 	Datum result;
 	char *strJson, *strKey;
 	cJSON *root, *sel;
@@ -205,11 +204,7 @@ Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextra
 		{
 			if (json_type == CJSON_TYPE_ANY || match_json_types(json_type, sel->type))
 			{
-				if (extractor(sel, &result))
-				{
-					status = true;
-				}
-				else
+				if (!extractor(sel, &result))
 				{
 					ereport(ERROR,
 							(errcode(ERRCODE_WRONG_OBJECT_TYPE),
