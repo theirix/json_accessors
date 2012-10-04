@@ -1,5 +1,8 @@
 Revision history for PostgreSQL extension.
 
+1.3.2   2012-10-04T193059
+      - Works with PostgreSQL 9.2
+
 1.3.1   2012-10-04T025946
       - Documentation changes.
 

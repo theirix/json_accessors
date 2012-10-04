@@ -2,7 +2,7 @@
   "name": "json_accessors",
   "abstract": "JSON accessor functions",
   "description": "Extension provides stored functions for accessing JSON fields by keys and converting JSON arrays.",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "maintainer": [
     "Eugene Seliverstov <theirix@gmail.com>"
   ],
@@ -11,7 +11,7 @@
     "json_accessors": {
       "file": "sql/json_accessors.sql",
       "docfile": "doc/json_accessors.md",
-      "version": "1.3.1"
+      "version": "1.3.2"
     }
   },
   "prereqs": {
