@@ -17,6 +17,7 @@
 #include "utils/builtins.h"
 #include "utils/timestamp.h"
 #include "utils/array.h"
+#include "utils/int8.h"
 #include "utils/lsyscache.h"
 #include "utils/formatting.h"
 

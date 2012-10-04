@@ -5,12 +5,15 @@ Extension provides stored functions for accessing [JSON](http://www.json.org/) f
 
 This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of [cJSON](http://sourceforge.net/projects/cjson/) library.
 
+Extension supports PostgreSQL 9.1 and 9.2.
+
 PostgreSQL have had no JSON support until version 9.2, which [introduced some support](http://www.postgresql.org/docs/9.2/static/functions-json.html).
 These 9.2 functions won't help with indexing JSON data.
 
 JSON parsing functions may be written using [PL/V8](http://code.google.com/p/plv8js/wiki/PLV8) module,
 [this article](http://people.planetpostgresql.org/andrew/index.php?/archives/249-Using-PLV8-to-index-JSON.html) has an example of PL/V8 usage.
 This project provides accessor functions for JSON without using PL/V8.
+
 
 Usage
 -----
@@ -23,7 +26,22 @@ On PGXN please click on extension from _Extensions_ section to view reference.
 Installing extension
 --------------------
 
-### Building and installing extension with PGXS
+To use an extension one must be built, installed into PostgreSQL directory
+and registered in a database.
+
+### Building extension
+
+#### Using PGXN network
+
+The easisest method to get and install an extension from PGXN network.
+PGXN client downloads and builds the extension.
+
+    pgxn --pg_config <postgresql_install_dir>/bin/pg_config install json_accessors
+
+PGXN client itself is available at [github](https://github.com/dvarrazzo/pgxnclient) and
+can be installed with your favourite method, i.e. `easy_install pgxnclient`.
+
+#### Using PGXS makefiles
 
 C extension are best built and installed using [PGXS](http://www.postgresql.org/docs/9.1/static/extend-pgxs.html).
 PGXS ensures that make is performed with needed compiler and flags. You only need GNU make and a compiler to build
@@ -37,13 +55,7 @@ Installation (as superuser):
 
     gmake PG_CONFIG=<postgresql_install_dir>/bin/pg_config install
 
-PostgreSQL server must be restarted and extension created in particular database as superuser:
-
-    create extension json_accessors
-
-To drop all functions use:
-
-    drop extension json_accessors cascade
+PostgreSQL server must be restarted. 
 
 To uninstall extension completely you may use this command (as superuser):
 
@@ -55,8 +67,7 @@ appropriated permissions - create database, for example):
 
     gmake PG_CONFIG=<postgresql_install_dir>/bin/pg_config PGUSER=postgres installcheck
 
-
-### Installing manually
+#### Manually
 
 Use this method if you have a precompiled extension and do not want to install this with help of PGXS.
 Or maybe you just do not have GNU make on a production server.
@@ -73,18 +84,23 @@ Copy SQL prototypes file to the extension directory:
     
     cp json_accessors--<version>.sql `<postgresql_install_dir>/bin/pg_config --sharedir`/extension
 
-Create an extension by running:
-
-    create extension json_accessors
-
-It creates all the accessors functions. Note that you must restart a server if a previous library was
-already installed at the same place.
-
-To drop all functions use:
-
-    drop extension json_accessors cascade
-
 To uninstall extension just remove files you copied before.
+
+### Creating extension in a database
+
+Extension must be previously installed to a PostgreSQL directory.
+
+Extension is created in a particular database (as superuser):
+
+    create extension json_accessors;
+
+It creates all the functions, operators and other stuff from extension.
+Note that you must restart a server if a previous library was already installed
+at the same place. In other words, always restart to be sure. 
+
+To drop an extension use:
+
+    drop extension json_accessors cascade;
 
 
 License information

@@ -6,7 +6,7 @@ Installing
 
     CREATE EXTENSION json_accessors;
 
-Extension is compatible witgh PostgreSQL 9.1.
+Extension is compatible witgh PostgreSQL 9.1 and 9.2.
 
 Description
 -----------
@@ -16,14 +16,12 @@ Extension provides stored functions for accessing [JSON](http://www.json.org/) f
 Usage
 -----
 
-Extension has two usage scenarios:
-
-1. Extract a json object by key:
+Extension allows to extract a typed JSON object (array, text or object) by the string key:
 
         select json_get_text('{"create_date":"2009-12-01 01:23:45","key":"foobar"}', 'key') = 'foobar';
         select json_get_int('{"bar": 42 }', 'key') = 42;
 
-2. Convert an JSON array to SQL array:
+Extension allows to convert a JSON array to a SQL array:
 
         select json_array_to_text_array('["foo", "bar", "baz"]') = array['foo','bar','baz'];
 
@@ -203,4 +201,5 @@ Copyright and License
 ---------------------
 
 You can use any code from this project under the terms of [PostgreSQL License](http://www.postgresql.org/about/licence/).
+
 Please consult with the COPYING for license information.
