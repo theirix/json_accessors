@@ -324,7 +324,7 @@ Datum json_array_to_array_generic_impl(cJSON *jsonArray, int json_type, Oid elem
  */
 Datum json_array_to_array_generic(text *argJson, int json_type, Oid elem_oid, pextract_type_from_json extractor)
 {
-	Datum result;
+	Datum result = (Datum)NULL;
 	char *strJson;
 	cJSON *root;
 
