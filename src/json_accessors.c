@@ -77,29 +77,29 @@ bool extract_object_array(cJSON *elem, DatumPtr result);
 /*
  * Exported functions
  */
-Datum json_get_object(PG_FUNCTION_ARGS);
-Datum json_get_text(PG_FUNCTION_ARGS);
-Datum json_get_boolean(PG_FUNCTION_ARGS);
-Datum json_get_int(PG_FUNCTION_ARGS);
-Datum json_get_bigint(PG_FUNCTION_ARGS);
-Datum json_get_numeric(PG_FUNCTION_ARGS);
-Datum json_get_timestamp(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_object(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_text(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_boolean(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_int(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_bigint(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_numeric(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_timestamp(PG_FUNCTION_ARGS);
 
-Datum json_array_to_object_array(PG_FUNCTION_ARGS);
-Datum json_array_to_text_array(PG_FUNCTION_ARGS);
-Datum json_array_to_boolean_array(PG_FUNCTION_ARGS);
-Datum json_array_to_int_array(PG_FUNCTION_ARGS);
-Datum json_array_to_bigint_array(PG_FUNCTION_ARGS);
-Datum json_array_to_numeric_array(PG_FUNCTION_ARGS);
-Datum json_array_to_timestamp_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_array_to_object_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_array_to_text_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_array_to_boolean_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_array_to_int_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_array_to_bigint_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_array_to_numeric_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_array_to_timestamp_array(PG_FUNCTION_ARGS);
 
-Datum json_get_object_array(PG_FUNCTION_ARGS);
-Datum json_get_text_array(PG_FUNCTION_ARGS);
-Datum json_get_boolean_array(PG_FUNCTION_ARGS);
-Datum json_get_int_array(PG_FUNCTION_ARGS);
-Datum json_get_bigint_array(PG_FUNCTION_ARGS);
-Datum json_get_numeric_array(PG_FUNCTION_ARGS);
-Datum json_get_timestamp_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_object_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_text_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_boolean_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_int_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_bigint_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_numeric_array(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_timestamp_array(PG_FUNCTION_ARGS);
 
 
 

@@ -1,6 +1,6 @@
 EXTENSION    = json_accessors
-EXTVERSION   = 1.3.2
-MODULE_big   = json_accessors
+EXTVERSION   = 1.3.3
+MODULE_big   = $(EXTENSION)
 OBJS         = $(patsubst %.c,%.o,$(wildcard src/*.c))
 DATA         = $(wildcard sql/*--*.sql) sql/$(EXTENSION)--$(EXTVERSION).sql
 DOCS         = $(wildcard doc/*.md)

@@ -45,7 +45,7 @@ can be installed with your favourite method, i.e. `easy_install pgxnclient`.
 
 C extension are best built and installed using [PGXS](http://www.postgresql.org/docs/9.1/static/extend-pgxs.html).
 PGXS ensures that make is performed with needed compiler and flags. You only need GNU make and a compiler to build
-an extension on an almost any UNIX platform (Linux, Solaris, OS X).
+an extension on an almost any UNIX platform (Linux, Solaris, OS X). 
 
 Compilation:
 
@@ -71,6 +71,7 @@ appropriated permissions - create database, for example):
 
 Use this method if you have a precompiled extension and do not want to install this with help of PGXS.
 Or maybe you just do not have GNU make on a production server.
+Or if you use Windows (use MSVC 2008 for Postgres 9.1 and MSVC 2010 for Postgres 9.2).
 
 Copy library to the PostgreSQL library directory:
 
