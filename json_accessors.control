@@ -1,5 +1,5 @@
 # json_accessors extension
 comment = 'postgresql json accessor functions'
-default_version = '1.3.3'
+default_version = '1.3.4'
 module_pathname = '$libdir/json_accessors'
 relocatable = true
