@@ -18,6 +18,8 @@ select json_get_bigint('{"baz": 42, "boo": 42.424242}', 'baz');
 select json_get_bigint('{"baz": 9223372036854, "boo": 42.424242}', 'baz');
 -- 42.424242
 select json_get_numeric('{"baz": 42, "boo": 42.424242}', 'boo');
+-- t
+select json_get_text('{"foo":"qq", "bar": true}', 'noneofthese') is null;
 
 -- Tue Dec 01 01:23:45 2009
 select json_get_timestamp('{"foo":"qq", "bar": "2009-12-01 01:23:45"}', 'bar');

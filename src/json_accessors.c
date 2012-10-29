@@ -189,9 +189,10 @@ ArrayType* construct_typed_array(Datum *elems, int nelems, Oid elmtype)
  */
 Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextract_type_from_json extractor)
 {
-	Datum result;
+	Datum result = (Datum)0;
 	char *strJson, *strKey;
 	cJSON *root, *sel;
+	bool valid = false;
 
 	strJson = text_to_cstring(argJson);
 	strKey = text_to_cstring(argKey);
@@ -211,6 +212,7 @@ Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextra
 							 errmsg("type extractor refused to parse object type %s",
 								 json_type_str(json_type))));
 				}
+				valid = true;
 			}
 			else
 			{
@@ -222,10 +224,11 @@ Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextra
 		}
 		else
 		{
-			ereport(ERROR,
+			valid = true;
+			/*ereport(ERROR,
 					(errcode(ERRCODE_WRONG_OBJECT_TYPE),
 					 errmsg("cannot extract from \"%s\" json object by the key \"%s\"",
-						 	strJson, strKey)));
+						 	strJson, strKey)));*/
 		}
 		cJSON_Delete(root);
 	}
@@ -239,7 +242,7 @@ Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextra
 	pfree(strJson);
 	pfree(strKey);
 
-	if (!result)
+	if (!valid)
 		ereport(ERROR,
 				(errcode(ERRCODE_WRONG_OBJECT_TYPE),
 				 errmsg("json string cannot be parsed")));
@@ -252,7 +255,11 @@ Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextra
  */
 Datum json_object_get_generic_args(PG_FUNCTION_ARGS, int json_type, pextract_type_from_json extractor)
 {
-	return json_object_get_generic(PG_GETARG_TEXT_P(0), PG_GETARG_TEXT_P(1), json_type, extractor);
+	Datum result = json_object_get_generic(PG_GETARG_TEXT_P(0), PG_GETARG_TEXT_P(1), json_type, extractor);
+	if (result)
+		PG_RETURN_DATUM(result);
+	else
+		PG_RETURN_NULL();
 }
 
 /*
