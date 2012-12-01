@@ -310,6 +310,10 @@ Datum json_array_to_array_generic_impl(cJSON *jsonArray, int json_type, Oid elem
 
 		pfree(items);
 	}
+	else
+	{
+		array = construct_empty_array(elem_oid);
+	}
 
 	if (!array)
 		ereport(ERROR,
