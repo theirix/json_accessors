@@ -50,8 +50,9 @@ Datum json_array_to_array_generic(text *argJson, int json_type, Oid elem_oid, pe
 Datum json_array_to_array_generic_args(PG_FUNCTION_ARGS, int json_type, Oid elem_oid, pextract_type_from_json extractor);
 
 bool match_json_types (int type1, int type2);
+bool isnull (cJSON* json);
 const char* json_type_str (int type);
-ArrayType* construct_typed_array(Datum *elems, int nelems, Oid elmtype);
+ArrayType* construct_typed_array(Datum *elems, bool *nulls, int nelems, Oid elmtype);
 
 /*
  * Extractors
@@ -166,16 +167,24 @@ const char* json_type_str (int type)
 	}
 }
 
+bool isnull (cJSON* json)
+{
+	return json->type == cJSON_NULL;
+}
+
 /*
  * Shortcut array construction call
  */
-ArrayType* construct_typed_array(Datum *elems, int nelems, Oid elmtype)
+ArrayType* construct_typed_array(Datum *elems, bool *nulls, int nelems, Oid elmtype)
 {
 	int16   elmlen;
 	bool    elmbyval;
 	char    elmalign;
+	int     dims[1] = { nelems };
+	int     lbs[1] = { 1 };
 	get_typlenbyvalalign(elmtype, &elmlen, &elmbyval, &elmalign);
-	return construct_array(elems, nelems, elmtype, elmlen, elmbyval, elmalign);
+	return construct_md_array(elems, nulls, 1, dims, lbs,
+			elmtype, elmlen, elmbyval, elmalign);
 }
 
 /*
@@ -203,7 +212,12 @@ Datum json_object_get_generic(text *argJson, text *argKey, int json_type, pextra
 		sel = cJSON_GetObjectItem(root, strKey);
 		if (sel)
 		{
-			if (json_type == CJSON_TYPE_ANY || match_json_types(json_type, sel->type))
+			if (isnull(sel))
+			{
+				/* fall through */
+				valid = true;
+			}
+			else if (json_type == CJSON_TYPE_ANY || match_json_types(json_type, sel->type))
 			{
 				if (!extractor(sel, &result))
 				{
@@ -275,6 +289,7 @@ Datum json_object_get_generic_args(PG_FUNCTION_ARGS, int json_type, pextract_typ
 Datum json_array_to_array_generic_impl(cJSON *jsonArray, int json_type, Oid elem_oid, pextract_type_from_json extractor)
 {
 	Datum *items = NULL;
+	bool *nulls = NULL;
 	ArrayType *array = NULL;
 	cJSON *elem;
 	int count = 0, ind;
@@ -286,7 +301,7 @@ Datum json_array_to_array_generic_impl(cJSON *jsonArray, int json_type, Oid elem
 
 	for (elem = jsonArray->child; elem; elem = elem->next)
 	{
-		if (!(json_type == CJSON_TYPE_ANY || match_json_types(json_type, elem->type)))
+		if (!(json_type == CJSON_TYPE_ANY || match_json_types(json_type, elem->type) || isnull(elem)))
 			ereport(ERROR,
 					(errcode(ERRCODE_WRONG_OBJECT_TYPE),
 					 errmsg("expected value of type %s, actual %s at %d position",
@@ -297,16 +312,19 @@ Datum json_array_to_array_generic_impl(cJSON *jsonArray, int json_type, Oid elem
 	if (count)
 	{
 		items = (Datum*)palloc(count * sizeof(Datum));
+		nulls = (bool*)palloc(count * sizeof(bool));
 
 		for (elem = jsonArray->child, ind = 0; elem; elem = elem->next, ++ind)
 		{
-			if (!extractor(elem, &items[ind]))
+			nulls[ind] = isnull(elem);
+
+			if (!isnull(elem) && !extractor(elem, &items[ind]))
 				ereport(ERROR,
 						(errcode(ERRCODE_WRONG_OBJECT_TYPE),
 						 errmsg("error converting json type %s at %d position",
 							 json_type_str(json_type), ind)));
 		}
-		array = construct_typed_array(items, count, elem_oid);
+		array = construct_typed_array(items, nulls, count, elem_oid);
 
 		pfree(items);
 	}

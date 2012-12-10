@@ -20,6 +20,8 @@ select json_get_bigint('{"baz": 9223372036854, "boo": 42.424242}', 'baz');
 select json_get_numeric('{"baz": 42, "boo": 42.424242}', 'boo');
 -- t
 select json_get_text('{"foo":"qq", "bar": true}', 'noneofthese') is null;
+-- t
+select json_get_text('{"foo":null, "bar": true}', 'foo') is null;
 
 -- Tue Dec 01 01:23:45 2009
 select json_get_timestamp('{"foo":"qq", "bar": "2009-12-01 01:23:45"}', 'bar');
@@ -55,6 +57,11 @@ select json_get_bigint_array('{"foo":"qq", "bar": [42, 9223372036854]}', 'bar');
 select json_get_numeric_array('{"foo":"qq", "bar": [42.4242,43.4343]}', 'bar');
 -- {"Tue Dec 01 01:23:45 2009","Sat Dec 01 01:23:45 2012"}
 select json_get_timestamp_array('{"foo":"qq", "bar": ["2009-12-01 01:23:45", "2012-12-01 01:23:45"]}', 'bar');
+
+-- {baz1,NULL,baz3}
+select json_get_text_array('{"foo":"qq", "bar": ["baz1", null, "baz3"]}', 'bar');
+-- {NULL,"Sat Dec 01 01:23:45 2012"}
+select json_get_timestamp_array('{"foo":"qq", "bar": [null, "2012-12-01 01:23:45"]}', 'bar');
 
 -- "qq"
 select json_get_object('{"foo":"qq", "bar": ["baz1", "baz2", "baz3"]}', 'foo');
