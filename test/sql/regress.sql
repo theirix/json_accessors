@@ -81,5 +81,11 @@ select json_array_to_object_array('[]');
 -- {"{\"foo\":42}","{\"bar\":[]}"}
 select json_get_object_array('{"key" : [{"foo":42}, {"bar":[]}]}', 'key');
 
+-- 0
+select json_get_int('{"a": 0}', 'a');
+
+-- 1
+select json_get_int('{"a": 1}', 'a');
+
 \t off
 \pset format aligned
