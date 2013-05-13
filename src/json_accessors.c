@@ -44,7 +44,8 @@ PG_MODULE_MAGIC;
 typedef bool (*pextract_type_from_json) (cJSON * elem, DatumPtr result);
 
 Datum json_object_get_generic(text *argJson, text *argKey, int json_type,
-						pextract_type_from_json extractor);
+						pextract_type_from_json extractor,
+						bool *null_value);
 Datum json_object_get_generic_args(PG_FUNCTION_ARGS, int json_type,
 							 pextract_type_from_json extractor);
 Datum json_array_to_array_generic_impl(cJSON * jsonArray, int json_type,
@@ -219,7 +220,8 @@ construct_typed_array(Datum *elems, bool *nulls, int nelems,
  */
 Datum
 json_object_get_generic(text *argJson, text *argKey, int json_type,
-						pextract_type_from_json extractor)
+						pextract_type_from_json extractor,
+						bool *null_value)
 {
 	Datum		result = (Datum) 0;
 	char	   *strJson,
@@ -232,6 +234,7 @@ json_object_get_generic(text *argJson, text *argKey, int json_type,
 	strKey = text_to_cstring(argKey);
 
 	root = cJSON_Parse(strJson);
+	*null_value = true;
 	if (root)
 	{
 		sel = cJSON_GetObjectItem(root, strKey);
@@ -253,6 +256,7 @@ json_object_get_generic(text *argJson, text *argKey, int json_type,
 							json_type_str(json_type))));
 				}
 				valid = true;
+				*null_value = false;
 			}
 			else
 			{
@@ -294,12 +298,14 @@ Datum
 json_object_get_generic_args(PG_FUNCTION_ARGS, int json_type,
 							 pextract_type_from_json extractor)
 {
+	bool		null_result;
 	Datum		result = json_object_get_generic(PG_GETARG_TEXT_P(0),
 												 PG_GETARG_TEXT_P(1),
 												 json_type,
-												 extractor);
+												 extractor,
+												 &null_result);
 
-	if (result)
+	if (!null_result)
 		PG_RETURN_DATUM(result);
 	else
 		PG_RETURN_NULL();
