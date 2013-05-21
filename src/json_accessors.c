@@ -81,11 +81,13 @@ bool		extract_timestamp_array(cJSON * elem, DatumPtr result);
 bool		extract_json_to_string(cJSON * elem, DatumPtr result);
 
 bool		extract_object_array(cJSON * elem, DatumPtr result);
+bool		extract_keys_array(cJSON * elem, DatumPtr result);
 
 /*
  * Exported functions
  */
 PGDLLEXPORT Datum json_get_object(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum json_get_object_keys(PG_FUNCTION_ARGS);
 PGDLLEXPORT Datum json_get_text(PG_FUNCTION_ARGS);
 PGDLLEXPORT Datum json_get_boolean(PG_FUNCTION_ARGS);
 PGDLLEXPORT Datum json_get_int(PG_FUNCTION_ARGS);
@@ -115,6 +117,7 @@ PGDLLEXPORT Datum json_get_timestamp_array(PG_FUNCTION_ARGS);
  * Declare V1 exports
  */
 PG_FUNCTION_INFO_V1(json_get_object);
+PG_FUNCTION_INFO_V1(json_get_object_keys);
 PG_FUNCTION_INFO_V1(json_get_text);
 PG_FUNCTION_INFO_V1(json_get_boolean);
 PG_FUNCTION_INFO_V1(json_get_int);
@@ -708,6 +711,7 @@ json_get_object_array(PG_FUNCTION_ARGS)
 										extract_object_array);
 }
 
+
 Datum
 json_get_text_array(PG_FUNCTION_ARGS)
 {
@@ -748,6 +752,61 @@ json_get_timestamp_array(PG_FUNCTION_ARGS)
 {
 	return json_object_get_generic_args(fcinfo, cJSON_Array,
 										extract_timestamp_array);
+}
+
+/* Get object keys and convert them back to text array
+ * Used as a proxy call
+ */
+Datum
+json_get_object_keys(PG_FUNCTION_ARGS)
+{
+	ArrayType	*result = NULL;
+	char		*strJson;
+	cJSON		*root, *child;
+	size_t		count;
+	Datum		*items;
+	bool		*nulls;
+
+	strJson = text_to_cstring(PG_GETARG_TEXT_P(0));
+	root = cJSON_Parse(strJson);
+	if (!root)
+	{
+		ereport(ERROR,
+				(errcode(ERRCODE_WRONG_OBJECT_TYPE),
+				 errmsg("cannot parse json string \"%s\", object parser",
+						strJson)));
+	}
+	else if (root->type != cJSON_Object)
+	{
+		ereport(ERROR,
+				(errcode(ERRCODE_WRONG_OBJECT_TYPE),
+				 errmsg("passed json object is not an object")));
+		cJSON_Delete(root);
+	}
+	else
+	{
+		child = root->child;
+		for (count = 0; child; child = child->next, count++);
+		items = (Datum *) palloc(count * sizeof(Datum));
+		nulls = (bool *) palloc(count * sizeof(bool));
+
+		child = root->child;
+		count = 0;
+		while (child)
+		{
+			items[count] = PointerGetDatum(cstring_to_text(child->string));
+			nulls[count++] = false;
+			child = child->next;
+		}
+		result = construct_typed_array(items, nulls, count, TEXTOID);
+
+		pfree(items);
+		pfree(nulls);
+		cJSON_Delete(root);
+	}
+
+	pfree(strJson);
+	PG_RETURN_ARRAYTYPE_P(result);
 }
 
 /* vim: set noexpandtab tabstop=4 shiftwidth=4: */
