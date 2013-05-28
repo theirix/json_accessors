@@ -74,3 +74,7 @@ create or replace function json_get_numeric_array(text, text) returns numeric[]
 
 create or replace function json_get_timestamp_array(text, text) returns timestamp without time zone[]
  as 'MODULE_PATHNAME' language C immutable strict; 
+
+create or replace function json_get_object_keys(text) returns text[]
+ as 'MODULE_PATHNAME' language C immutable strict;
+ 
