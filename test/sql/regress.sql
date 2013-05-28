@@ -87,5 +87,10 @@ select json_get_int('{"a": 0}', 'a');
 -- 1
 select json_get_int('{"a": 1}', 'a');
 
+-- {foo,bar}
+select json_get_object_keys('{"foo":"qq", "bar": ["baz1", "baz2", "baz3"]}');
+-- {}
+select json_get_object_keys('{}');
+
 \t off
 \pset format aligned
