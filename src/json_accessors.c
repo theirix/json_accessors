@@ -41,7 +41,7 @@ PG_MODULE_MAGIC;
 /*
  * Internal functions declarations
  */
-typedef bool (*pextract_type_from_json) (cJSON * elem, DatumPtr result);
+typedef bool (*pextract_type_from_json) (cJSON * elem, Datum* result);
 
 Datum json_object_get_generic(text *argJson, text *argKey, int json_type,
 						pextract_type_from_json extractor,
@@ -64,24 +64,24 @@ ArrayType *construct_typed_array(Datum *elems, bool *nulls, int nelems,
 /*
  * Extractors
  */
-bool		extract_json_string(cJSON * elem, DatumPtr result);
-bool		extract_json_boolean(cJSON * elem, DatumPtr result);
-bool		extract_json_int(cJSON * elem, DatumPtr result);
-bool		extract_json_bigint(cJSON * elem, DatumPtr result);
-bool		extract_json_numeric(cJSON * elem, DatumPtr result);
-bool		extract_json_timestamp(cJSON * elem, DatumPtr result);
+bool		extract_json_string(cJSON * elem, Datum* result);
+bool		extract_json_boolean(cJSON * elem, Datum* result);
+bool		extract_json_int(cJSON * elem, Datum* result);
+bool		extract_json_bigint(cJSON * elem, Datum* result);
+bool		extract_json_numeric(cJSON * elem, Datum* result);
+bool		extract_json_timestamp(cJSON * elem, Datum* result);
 
-bool		extract_text_array(cJSON * elem, DatumPtr result);
-bool		extract_boolean_array(cJSON * elem, DatumPtr result);
-bool		extract_int_array(cJSON * elem, DatumPtr result);
-bool		extract_bigint_array(cJSON * elem, DatumPtr result);
-bool		extract_numeric_array(cJSON * elem, DatumPtr result);
-bool		extract_timestamp_array(cJSON * elem, DatumPtr result);
+bool		extract_text_array(cJSON * elem, Datum* result);
+bool		extract_boolean_array(cJSON * elem, Datum* result);
+bool		extract_int_array(cJSON * elem, Datum* result);
+bool		extract_bigint_array(cJSON * elem, Datum* result);
+bool		extract_numeric_array(cJSON * elem, Datum* result);
+bool		extract_timestamp_array(cJSON * elem, Datum* result);
 
-bool		extract_json_to_string(cJSON * elem, DatumPtr result);
+bool		extract_json_to_string(cJSON * elem, Datum* result);
 
-bool		extract_object_array(cJSON * elem, DatumPtr result);
-bool		extract_keys_array(cJSON * elem, DatumPtr result);
+bool		extract_object_array(cJSON * elem, Datum* result);
+bool		extract_keys_array(cJSON * elem, Datum* result);
 
 /*
  * Exported functions
@@ -446,14 +446,14 @@ json_array_to_array_generic_args(PG_FUNCTION_ARGS, int json_type,
  */
 
 bool
-extract_json_string(cJSON * elem, DatumPtr result)
+extract_json_string(cJSON * elem, Datum* result)
 {
 	*result = PointerGetDatum(cstring_to_text(elem->valuestring));
 	return true;
 }
 
 bool
-extract_json_boolean(cJSON * elem, DatumPtr result)
+extract_json_boolean(cJSON * elem, Datum* result)
 {
 	if (elem->type == cJSON_True)
 	{
@@ -469,21 +469,21 @@ extract_json_boolean(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_json_int(cJSON * elem, DatumPtr result)
+extract_json_int(cJSON * elem, Datum* result)
 {
 	*result = Int32GetDatum(elem->valueint);
 	return true;
 }
 
 bool
-extract_json_bigint(cJSON * elem, DatumPtr result)
+extract_json_bigint(cJSON * elem, Datum* result)
 {
 	*result = DirectFunctionCall1(int8in, CStringGetDatum(elem->valuestring));
 	return true;
 }
 
 bool
-extract_json_numeric(cJSON * elem, DatumPtr result)
+extract_json_numeric(cJSON * elem, Datum* result)
 {
 	*result = DirectFunctionCall2(numeric_to_number,
 						 PointerGetDatum(cstring_to_text(elem->valuestring)),
@@ -492,7 +492,7 @@ extract_json_numeric(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_json_timestamp(cJSON * elem, DatumPtr result)
+extract_json_timestamp(cJSON * elem, Datum* result)
 {
 	Datum		timestampWithTz;
 
@@ -507,7 +507,7 @@ extract_json_timestamp(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_text_array(cJSON * elem, DatumPtr result)
+extract_text_array(cJSON * elem, Datum* result)
 {
 	*result = json_array_to_array_generic_impl(elem, cJSON_String, TEXTOID,
 											   extract_json_string);
@@ -515,7 +515,7 @@ extract_text_array(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_boolean_array(cJSON * elem, DatumPtr result)
+extract_boolean_array(cJSON * elem, Datum* result)
 {
 	*result = json_array_to_array_generic_impl(elem, cJSON_True, BOOLOID,
 											   extract_json_boolean);
@@ -523,7 +523,7 @@ extract_boolean_array(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_int_array(cJSON * elem, DatumPtr result)
+extract_int_array(cJSON * elem, Datum* result)
 {
 	*result = json_array_to_array_generic_impl(elem, cJSON_Number, INT4OID,
 											   extract_json_int);
@@ -531,7 +531,7 @@ extract_int_array(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_bigint_array(cJSON * elem, DatumPtr result)
+extract_bigint_array(cJSON * elem, Datum* result)
 {
 	*result = json_array_to_array_generic_impl(elem, cJSON_Number, INT8OID,
 											   extract_json_bigint);
@@ -539,7 +539,7 @@ extract_bigint_array(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_numeric_array(cJSON * elem, DatumPtr result)
+extract_numeric_array(cJSON * elem, Datum* result)
 {
 	*result = json_array_to_array_generic_impl(elem, cJSON_Number, NUMERICOID,
 											   extract_json_numeric);
@@ -547,7 +547,7 @@ extract_numeric_array(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_timestamp_array(cJSON * elem, DatumPtr result)
+extract_timestamp_array(cJSON * elem, Datum* result)
 {
 	*result = json_array_to_array_generic_impl(elem, cJSON_String, TIMESTAMPOID,
 											   extract_json_timestamp);
@@ -555,7 +555,7 @@ extract_timestamp_array(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_json_to_string(cJSON * elem, DatumPtr result)
+extract_json_to_string(cJSON * elem, Datum* result)
 {
 	char	   *pstr;
 
@@ -566,7 +566,7 @@ extract_json_to_string(cJSON * elem, DatumPtr result)
 }
 
 bool
-extract_object_array(cJSON * elem, DatumPtr result)
+extract_object_array(cJSON * elem, Datum* result)
 {
 	*result = json_array_to_array_generic_impl(elem, CJSON_TYPE_ANY, TEXTOID,
 											   extract_json_to_string);
