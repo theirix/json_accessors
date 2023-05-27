@@ -1,5 +1,9 @@
 Revision history for PostgreSQL extension.
 
+1.3.6   2023-05-27T030000
+      - Support PostgreSQL up to 16
+      - Add CI builds
+
 1.3.5   2012-12-11T030000
       - Handle json null objects
       - Empty PostgreSQL arrays will now be created for empty JSON arrays (thanks to shartte)
