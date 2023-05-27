@@ -3,9 +3,9 @@ JSON accessor functions for PostgreSQL
 
 Extension provides stored functions for accessing [JSON](http://www.json.org/) fields by keys and converting JSON arrays.
 
-This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of [cJSON](http://sourceforge.net/projects/cjson/) library.
+This project contains PostgreSQL [extension](http://www.postgresql.org/docs/9.1/static/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of modified [cJSON](http://sourceforge.net/projects/cjson/) library (very old version).
 
-Extension supports PostgreSQL 9.1 and 9.2.
+Extension supports PostgreSQL 9.1 through 16.
 
 PostgreSQL have had no JSON support until version 9.2, which [introduced some support](http://www.postgresql.org/docs/9.2/static/functions-json.html).
 These 9.2 functions won't help with indexing JSON data.
@@ -43,7 +43,7 @@ can be installed with your favourite method, i.e. `easy_install pgxnclient`.
 
 #### Using PGXS makefiles
 
-C extension are best built and installed using [PGXS](http://www.postgresql.org/docs/9.1/static/extend-pgxs.html).
+C extension are best built and installed using [PGXS](https://www.postgresql.org/docs/current/extend-pgxs.html).
 PGXS ensures that make is performed with needed compiler and flags. You only need GNU make and a compiler to build
 an extension on an almost any UNIX platform (Linux, Solaris, OS X). 
 
@@ -65,6 +65,7 @@ Project contains SQL tests that can be launched on PostgreSQL with installed ext
 Tests are performed on a dynamically created database with a specified user (with the 
 appropriated permissions - create database, for example):
 
+    gmake PG_CONFIG=<postgresql_install_dir>/bin/pg_config install
     gmake PG_CONFIG=<postgresql_install_dir>/bin/pg_config PGUSER=postgres installcheck
 
 #### Manually
