@@ -17,7 +17,11 @@
 #include "utils/builtins.h"
 #include "utils/timestamp.h"
 #include "utils/array.h"
+#if PG_VERSION_NUM < 100000
 #include "utils/int8.h"
+#else
+#include "utils/fmgrprotos.h"
+#endif
 #include "utils/lsyscache.h"
 #include "utils/formatting.h"
 
