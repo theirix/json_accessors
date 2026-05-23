@@ -16,6 +16,8 @@ RUN mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
     gpg --dearmor -o /etc/apt/keyrings/postgres.gpg && \
     echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/postgres.gpg] http://apt.postgresql.org/pub/repos/apt/ ${PGCHANNEL} main ${PGVERSION}" | \
+    tee -a /etc/apt/sources.list.d/postgres.list && \
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/postgres.gpg] http://apt.postgresql.org/pub/repos/apt/ ${PGCHANNEL} main" | \
     tee -a /etc/apt/sources.list.d/postgres.list
 
 # Prefer packages from Postgres repository
