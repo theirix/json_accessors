@@ -5,7 +5,7 @@ Extension provides stored functions for accessing [JSON](http://www.json.org/) f
 
 This project contains PostgreSQL [extension](https://www.postgresql.org/docs/current/extend-extensions.html) `json_accessors` with stored functions. Extension is native and writen in C on top of modified [cJSON](http://sourceforge.net/projects/cjson/) library (very old version).
 
-Extension supports PostgreSQL 9.1 through 18 (and probably even higher versions).
+Extension supports PostgreSQL 9.1 through 19 (and probably even higher versions).
 
 PostgreSQL have had no JSON support until version 9.2, which [introduced some support](http://www.postgresql.org/docs/9.2/static/functions-json.html).
 These 9.2 functions won't help with indexing JSON data.
